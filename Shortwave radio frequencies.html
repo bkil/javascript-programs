@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Shortwave Radio frequencies</title>
+<style>
+    body{
+        background:#111;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color:#ddd;
+    }
+    td{
+        padding: 5px;
+		max-width:300px;
+    }
+    table, td{
+        border: #FFF 1px solid;
+		background:RGBA(0,0,0,0.5);
+    }
+    table{
+	max-width:1000px;
+	background:url('earthmap.jpg');
+	background-repeat: no-repeat;
+	background-size: 950px 550px;
+    }
+	#table-h{
+		font-weight:700
+	}
+	a{
+	color:#fff;
+	background: #545;
+	}
+    #common{
+        background-color: RGBA(200,0,0,0.4);
+    }
+</style>
+</head>
+<h2>Shortwave meter bands with examples (array)</h2>
+<p>DISCLAIMER: The table data is from the <a href="https://en.wikipedia.org/wiki/Shortwave_radio">Wikipedia</a>, except the examples.</p>
+<form>
+    <table>
+        <tr id="table-h">
+            <td width="50px">Meter band</td>
+            <td>Frequency Range</td>
+			<td>Remarks</td>
+            <td>Example channel</td>
+            <td># of the list</td>
+        </tr>
+		<tr>
+            <td>120 m</td>
+            <td>2.3–2.495 MHz</td>
+			<td>tropical band</td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr>
+            <td>90 m</td>
+            <td>3.2–3.4 MHz</td>
+			<td>tropical band</td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr>
+            <td>75 m</td>
+            <td>3.9–4 MHz</td>
+			<td>shared with the North American amateur radio 80m band</td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr>
+            <td>60 m</td>
+            <td>4.75–5.06 MHz</td>
+			<td>tropical band</td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr id="common">
+            <td>49 m</td>
+            <td>5.9–6.2 MHz</td>
+			<td></td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr id="common">
+            <td>41 m</td>
+            <td>7.2–7.6 MHz</td>
+			<td>shared with the amateur radio 40m band</td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr id="common">
+            <td>31 m</td>
+            <td>9.4–9.9 MHz</td>
+			<td>currently the most heavily used band</td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr id="common">
+            <td>25 m</td>
+            <td>11.6–12.2 MHz</td>
+			<td></td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr id="common">
+            <td>22 m</td>
+            <td>13.57–13.87 MHz</td>
+			<td></td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr id="common">
+            <td>19 m</td>
+            <td>15.1–15.8 MHz</td>
+			<td></td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr id="common">
+            <td>16 m</td>
+            <td>17.48–17.9 MHz</td>
+			<td></td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr>
+            <td>13 m</td>
+            <td>21.45–21.85 MHz</td>
+			<td></td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+		<tr>
+            <td>11 m </td>
+            <td>25.6–26.1 MHz</td>
+			<td>may be used for local DRM broadcasting </td>
+            <td class="example"></td>
+            <td class="number"></td>
+        </tr>
+    </table>
+</form>
+<script>
+    //Here comes the arrays for the shortwave frequencies
+    let m120 = ["Radio Vanuatu 2485", "WWV Colorado 2500", "WWVH Hawaii 2500"];
+    let m90 = ["NBC Sandaun 3205", "KCBS Pyongyang 3220", "Pyongyang BS 3320", "Voice of Indonesia 3325", "CHU Canada 3330", "Radio Municipal 3375"];
+    let m75 = ["Voice Of The People 3905", "KCBS Pyongyang 3920", "PBS Xinjiang 3950", "Shortwave Radio 3975", "Echo of Hope 3980"];
+    let m60 = ["Radio San Miguel 4700", "CNR1 Voice of China 4800", "AIR Gangtok 4835", "Mongolian Radio 1 4895", "WWV 5000", "WWVH 5000", "WRMI 5010", "PBS Xinjiang 5060"];
+    let m49 = ["WRMI 5800", "Radio Farda 5860", "China Radio Int. 5905", "Voice of America 5930", "BBC 5970", "China Radio INt. 6040", "Adventist World Radio 6055", "Channel 292 6070", "Europa 24 6150", "Echo of Hope 6250"];
+    let m41 = ["Myanmar Radio 7200", "All India Radio 7270", "TWR Africa 7315", "Vatican Radio 7320", "Radio Romania Int. 7355", "China Radio Int. 7360", "BBC 7465", "BBC 7485", "Trans World Radio Guam 7510", "WRMI 7570", "North Korea Reform Radio 7590"];
+    let m31 = ["FEBC Radio 9275", "VoA Deewa Radio 9310", "Voice of America 9370", "BBC 9410", "Voice of Korea 9435", "Adventist World Radio 9445", "WRMI 9455", "WTWW 9475", "Voice of Indonesia 9525", "Radio Romania Int. 9580", "China Radio International 9675", "NHK World Radio Japan 9750", "Radio Kuwait 9750", "Voice of Turkey 9840", "KBS World Radio 9860", "Radio Free Asia 9940", "WWV 10000", "WWVH 10000"];
+    let m25 = ["VOA Radio Ashna 11575", "Radio Free Asia 11610", "Voice of Korea 11645", "Adventist World Radio 11755", "Radio Habana Cuba 11760", "Radio Free Europe /<br> Radio Liberty 11790", "Vatican Radio 11815", "Radio Marti 11930", "Radio Exterior De Espana 11940", "Voice of America 12055","BBC 12095", "WWCR Nashville 12160"];
+    let m22 = ["Radio Free Asia 13570", "Radio Marti 13605", "Voice of America 13630", "BBC 13660", "Radio France Int. 13690", "Deutsche Welle 13775", "VOA Deewa Radio 13820", "SOH Xi Wang Zhi Sheng 13890"];
+    let m19 = ["WWV 15000", "WWVH 15000", "SOH Xi Wang Zhi Sheng 15070", "Voice of Nigeria 15120", "Radio Habana Cuba 15140", "Radio Saudi 15205", "WWRB Radio Munansi 15240", "Voice of Korea 15245", "Deutsche Welle 15275", "Manara Radio International 15285", "Voice Of America 15460", "Radio Kuwait 15540", "WHJR Radio Int. 15550", "Voice Of America 15580", "Adventist World Radio 15605", "Voice Of America 15620", "BBC 15680", "World Music Radio 15805", "WTWW 15810", "WWCR Nashville 15825"];
+    let m16 = ["Voice Of America 17530","Radio Saudi 17560", "BBC 17640","China Radio International 17650","Adventist World Radio 17725", "KVOH Voice of Hope 17775", "BBC 17830", "China Radio International 17880"];
+    let m13 = ["WRMI Radio Africa 21525", "Radio France International 21580", "WHRI Call to Worship 21610"];
+    //Now we're gonna play with them: Basically we make a script that randomly displays the stations
+    let iterators = [m120, m90, m75, m60, m49, m41, m31, m25, m22, m19, m16, m13];
+    const examples = document.getElementsByClassName("example");
+    const numberth = document.getElementsByClassName("number");
+    examples[0].innerHTML =examples.length;
+    for (let i = 0; i < iterators.length; i++) {
+        let rnd = Math.floor(Math.random() * iterators[i].length);
+        examples[i].innerHTML = iterators[i][rnd] + " KHz";
+        numberth[i].innerHTML = rnd+1+"/"+iterators[i].length;
+    }
+    examples[examples.length-1].innerHTML = "There is nothing on it";
+</script>
+</body>
+</html>

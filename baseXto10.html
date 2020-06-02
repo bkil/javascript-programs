@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<body>
+<style>
+    body{
+        background:#111;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color:#ddd;
+    }
+</style>
+<h2>From base X to base 10 number - program by: Kun Attila</h2>
+<form>
+    <table>
+        <tr>
+            <td><label for="num">Number (in 2-36 number system):</label></td>
+            <td><input type="text" id="num" name="num"  oninput="calculate.calculate(this.value, document.getElementById('numSys').value);"></td>
+        </tr>
+        <tr>
+            <td><label for="numSys">Starting number system(2-36):</label></td>
+            <td><input type="number" id="numSys" name="numSys" value="16" oninput="calculate.calculate(document.getElementById('num').value, this.value);"></td>
+        </tr>
+        <tr>
+            <td><label for="res">Result in decimal:</label></td>
+            <td><span id="res"></span></td>
+        </tr>
+    </table>
+</form>
+<script>
+const resTXT = document.getElementById("res");
+var calculate = {
+    calculate: (numb, numbSys) => {
+        resTXT.innerHTML = "";
+        if (numbSys > 36 || numbSys < 2)
+        {
+            resTXT.innerHTML = "Wrong number system entered";
+        }
+        else
+        {
+            let numbers = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let multiplier = 1;
+            let result = 0;
+            let index = numb.length - 1;
+            let error = 0;
+            while (index > -1){
+                if (numbers.indexOf(numb[index]) >= numbSys){
+                    resTXT.innerHTML += "the number " + numb[index] + " is greater than the number system itself" + "<br>";
+                    error = 1;
+                    index = -1;
+                }
+                else{
+                    resTXT.innerHTML += numb[index] + " " + multiplier + "<br>";
+                    result+=numbers.indexOf(numb[index])* multiplier;
+                    multiplier*=numbSys;
+                }
+                index--;
+            }
+            if (error != 1) resTXT.innerHTML += result;
+        }
+    }
+}
+
+</script>
+
+</body>
+</html>

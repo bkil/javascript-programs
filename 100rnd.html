@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>100 random number seperated into arrays</title>
+<style>
+    body{
+        background:#111;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color:#ddd;
+    }
+    td{
+        padding: 20px;
+    }
+    table, td{
+        border: #FFF 1px solid;
+    }
+    table{
+        width: 500px;
+    }
+</style>
+</head>
+<h2>100 random number seperated into arrays</h2>
+<form>
+    <table>
+        <tr>
+            <td><label for="neg">Number of negative numbers:</label></td>
+            <td><span id="neg">length</span></td>
+        </tr>
+        <tr>
+            <td colspan="2"><span id="negRes">Content: </label></td>
+        </tr>
+        <tr>
+            <td><label for="poseven">Number of positive even numbers:</label></td>
+            <td><span id="poseven">length</span></td>
+        </tr>
+        <tr>
+            <td colspan="2"><span id="posevenres">Content: </label></td>
+        </tr>
+        <tr>
+            <td><label for="posodd">Number of positive odd numbers:</label></td>
+            <td><span id="posodd">length</span></td>
+        </tr>
+        <tr>
+            <td colspan="2"><span id="posoddres">Content: </label></td>
+        </tr>
+    </table>
+</form>
+<script>
+const posodd = document.getElementById("posodd");
+const poseven = document.getElementById("poseven");
+const neg = document.getElementById("neg");
+const posevenres = document.getElementById("posevenres");
+const negRes = document.getElementById("negRes");
+const posoddres = document.getElementById("posoddres");
+
+var array0 = [], arrayNeg = [], arrayPosEven = [], arrayPosOdd = [], iN = 0, iPE = 0, iPO = 0; 
+var N = 100;
+for (let i = 0; i < N; i++) {
+    //1st step. Generating the random numbers
+    var negative = Math.round(Math.random());
+    if(negative == 0){
+        var rnd = Math.floor(Math.random()*100);
+        array0[i] = rnd;
+    }
+    else{
+        var rnd = -(Math.floor(Math.random()*100));
+        array0[i] = rnd;
+    }
+    //2nd step: Separating them
+    if (array0[i] < 0){
+        arrayNeg[iN] = array0[i];
+        iN++;
+    }
+    else if (array0[i] % 2 == 0){
+        arrayPosEven[iPE] = array0[i];
+        iPE++;
+    }
+    else{
+        arrayPosOdd[iPO] = array0[i];
+        iPO++;
+    }
+}
+//3rd step. We're gonna write the results out of how many of the filtered numbers exist
+let iterator = [iN, iPE, iPO];
+let innerHTMLs = [negRes, posevenres, posoddres];
+let arrays = [arrayNeg, arrayPosEven, arrayPosOdd];
+neg.innerHTML=iN;
+poseven.innerHTML=iPE;
+posodd.innerHTML=iPO;
+
+//4th step. Sorting the arrays.
+    
+function swap(arr, i, j){
+   var temp = arr[i];
+   arr[i] = arr[j];
+   arr[j] = temp;
+}
+function partition(arr, pivot, left, right){
+   var pivotValue = arr[pivot],
+       partitionIndex = left;
+
+   for(var i = left; i < right; i++){
+    if(arr[i] < pivotValue){
+      swap(arr, i, partitionIndex);
+      partitionIndex++;
+    }
+  }
+  swap(arr, right, partitionIndex);
+  return partitionIndex;
+}
+function quickSort(arr, left, right){
+   var len = arr.length, 
+   pivot,
+   partitionIndex;
+
+
+  if(left < right){
+    pivot = right;
+    partitionIndex = partition(arr, pivot, left, right);
+    
+   //sort left and right
+   quickSort(arr, left, partitionIndex - 1);
+   quickSort(arr, partitionIndex + 1, right);
+  }
+  return arr;
+}
+//5th step. We're gonna write the numbers into the "Content" field
+for (let i = 0; i < 3; i++) {
+    quickSort(arrays[i], 0, arrays[i].length-1);
+    for (let j = 0; j < iterator[i]; j++) {
+        if(j == iterator[i] - 1) innerHTMLs[i].innerHTML+= arrays[i][j];
+        else innerHTMLs[i].innerHTML += arrays[i][j] + ", ";
+    }
+}
+
+</script>
+
+</body>
+</html>
