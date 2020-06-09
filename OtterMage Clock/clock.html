@@ -5,12 +5,9 @@
 <title>Analog clock</title>
 <style>
 @font-face{
-	font-family: "DSEG7";
-	src: url("DSEG7ClassicMini-Bold.woff2");
-}
-@font-face{
-	font-family: "DSEG14";
-	src: url("DSEG14ClassicMini-Bold.woff2");
+	font-family: "DSEG7ClassicMini-Bold";
+	src: url("DSEG7ClassicMini-Bold.woff2")
+	font-weight:bold;
 }
 html{
     background: #2caa36;
@@ -67,12 +64,12 @@ html{
 }
 
 .digital{
-	font-family: "DSEG14";
+	font-family: "DSEG7ClassicMini-Bold";
 	color: white;
-	font-size:2.2em;
+	font-size:3em;
 	position: absolute;
-	top: 500px;
-	left: 345px;
+	top: 490px;
+	left: 360px;
 }
 #mode{
 position:absolute;
@@ -81,14 +78,14 @@ left:420px;
 width:80px;
 height:40px;
 background-color:black;
-font-family: s;
+font-family: Times;
 color: white;
 }
 </style>
 </head>
 <body>
 <div>
-<img src="Clockface2.png" id="clockface">
+<img src="clockface2.png" id="clockface">
 <div class="hand hour" data-hour-hand></div>
 <div class="hand minute" data-minute-hand></div>
 <div class="hand second" data-second-hand></div>
@@ -114,10 +111,8 @@ color: white;
 <audio id="longhrchime">
 <source src="longhrchime.ogg" type="audio/ogg">
 </audio>
-<!-- audio source: https://freesound.org/people/FreqMan/sounds/88525/
-link to the license: https://creativecommons.org/licenses/by/3.0/ -->
 <script>
-setInterval(setClock, 850);
+setInterval(setClock, 1);
 const hourHand = document.querySelector('[data-hour-hand]');
 const minuteHand = document.querySelector('[data-minute-hand]');
 const secondHand = document.querySelector('[data-second-hand]');
@@ -135,26 +130,25 @@ function setClock() {
   const d = new Date();
   //hands rotation
   const msecondsRatio =  d.getMilliseconds() / 1000;
-  const secondsRatio = (d.getSeconds()) / 60;
+  const secondsRatio = (msecondsRatio + d.getSeconds()) / 60;
   const minutesRatio = (secondsRatio + d.getMinutes()) / 60;
   const hoursRatio = (minutesRatio + d.getHours()) / 12;
   setRotation(secondHand, secondsRatio);
   setRotation(minuteHand, minutesRatio);
   setRotation(hourHand, hoursRatio);
-  //date display (eg. Tue 6-9) MODE 0
+  //date display (eg. Tue 6-9)
   if (mode == 0){
 	let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 	if (d.getMonth() == 10 || d.getMonth == 11) digitalDisplay.innerHTML = days[d.getDay()] + "&nbsp;" + (d.getMonth()+1) + "-"+ d.getDate();
-	else if (d.getDate() > 10) digitalDisplay.innerHTML = days[d.getDay()] + "&nbsp;" + (d.getMonth()+1) + "-"+ d.getDate();
-  else digitalDisplay.innerHTML = days[d.getDay()] + "&emsp;" + (d.getMonth()+1) + "-"+ d.getDate();
+	else digitalDisplay.innerHTML = days[d.getDay()] + "&nbsp;&nbsp;" + (d.getMonth()+1) + "-"+ d.getDate();
   }
-
-  function pad(value) {
-    return value < 10 ? "0" + value : value;
-  } 
-  //time function (eg. 12:03:42) MODE 1
+  //time function (eg. 12:03:42)
   if (mode == 1) {
-	 digitalDisplay.innerHTML = "&nbsp;&nbsp;" +  d.getHours()+ ":" +pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+  if (d.getMinutes() < 10)
+	if(d.getSeconds() < 10) digitalDisplay.innerHTML = d.getHours()+ ":0" +d.getMinutes() + " 0" + d.getSeconds();
+	else digitalDisplay.innerHTML = d.getHours()+ ":0" +d.getMinutes() + " " + d.getSeconds();
+  else if (d.getSeconds() < 10) digitalDisplay.innerHTML = d.getHours()+ ":" +d.getMinutes() + " 0" + d.getSeconds();
+  else digitalDisplay.innerHTML = d.getHours()+ ":" +d.getMinutes() + " " + d.getSeconds();
   }
   //playing chimes each quarter hr
   if (d.getMinutes() == 15 && d.getSeconds() == 0){
@@ -172,14 +166,8 @@ function setClock() {
   ticktock.play();
 }
 function changemode(){
-	if (mode == 0){
-    mode = 1;
-    changeFont(digitalDisplay, "DSEG7");
-  }
-	else{
-    mode = 0;
-    changeFont(digitalDisplay, "DSEG14");
-  }
+	if (mode == 0) mode = 1;
+	else mode = 0;
 }
 async function playHours(){
 	const d = new Date();
@@ -199,15 +187,10 @@ function asyncaudio(url){
     audio.play();
    });
 }
-
-function changeFont(element, font) {
-  element.style.setProperty('font-family', font);
-}
 function setRotation(element, rotationRatio) {
   element.style.setProperty('--rotation', rotationRatio * 360)
 }
 
-setClock();
 </script>
 
 </body>
