@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Analog clock</title>
+<style>
+@font-face{
+	font-family: "DSEG7";
+	src: url("DSEG7ClassicMini-Bold.woff2");
+}
+@font-face{
+	font-family: "DSEG14";
+	src: url("DSEG14ClassicMini-Bold.woff2");
+}
+html{
+    background: #2caa36;
+}
+#clockface{
+    position: relative;
+    left:50px;
+}
+
+.hand{
+    --rotation: 0;
+    position: absolute;
+    left:456.4px;
+    background-color: black;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    transform-origin: bottom;
+    transform: translateX(-50%) rotate(calc(var(--rotation) * 1deg));
+	border: 1px solid gold;
+}
+.hand.second{
+    left:456px;
+    top:107px;
+    width:5px;
+    height:303px;
+	z-index:12;
+    background-color: maroon;
+}
+
+.hand.minute{
+    top:110px;
+    width:10px;
+    height:300px;
+	z-index:11;
+    background-color: black;
+}
+
+.hand.hour{
+    top:200px;
+    width:10px;
+    height:210px;
+	z-index:10;
+    background-color: maroon;
+}
+.sphere{
+    position: absolute;
+    background-color: maroon;
+    z-index:100;
+    width:20px;
+    height:20px;
+    top:400px;
+    left:446px;
+    border-radius: 10px;
+}
+
+.digital{
+	font-family: "DSEG14";
+	color: white;
+	font-size:2.2em;
+	position: absolute;
+	top: 500px;
+	left: 345px;
+}
+#mode{
+position:absolute;
+top:150px;
+left:420px;
+width:80px;
+height:40px;
+background-color:black;
+font-family: s;
+color: white;
+}
+</style>
+</head>
+<body>
+<div>
+<img src="clockface2.png" id="clockface">
+<div class="hand hour" data-hour-hand></div>
+<div class="hand minute" data-minute-hand></div>
+<div class="hand second" data-second-hand></div>
+<div class="sphere"></div>
+<div class="digital" data-digital-display></div>
+<button id="mode" onclick="changemode()">MODE</button>
+</div>
+<audio id="tick" loop>
+<source src="ticktock.ogg" type="audio/ogg">
+</audio>
+<audio id="quarter">
+<source src="quarter.ogg" type="audio/ogg">
+</audio>
+<audio id="halfhr">
+<source src="halfhr.ogg" type="audio/ogg">
+</audio>
+<audio id="threequarter">
+<source src="threequarter.ogg" type="audio/ogg">
+</audio>
+<audio id="fullhr" onended ="playHours();">
+<source src="fullhr.ogg" type="audio/ogg">
+</audio>
+<audio id="longhrchime">
+<source src="longhrchime.ogg" type="audio/ogg">
+</audio>
+<!-- audio source: https://freesound.org/people/FreqMan/sounds/88525/
+link to the license: https://creativecommons.org/licenses/by/3.0/ -->
+<script>
+setInterval(setClock, 850);
+const hourHand = document.querySelector('[data-hour-hand]');
+const minuteHand = document.querySelector('[data-minute-hand]');
+const secondHand = document.querySelector('[data-second-hand]');
+const digitalDisplay = document.querySelector('[data-digital-display]');
+let mode = 0;
+//sounds declaration
+let ticktock = document.getElementById("tick");
+let quarter = document.getElementById("quarter");
+let halfhr = document.getElementById("halfhr");
+let threequarter = document.getElementById("threequarter");
+let fullhr = document.getElementById("fullhr");
+let hourchime = document.getElementById("hourchime");
+let longhrchime = document.getElementById("longhrchime");
+function setClock() {
+  const d = new Date();
+  //hands rotation
+  const msecondsRatio =  d.getMilliseconds() / 1000;
+  const secondsRatio = (d.getSeconds()) / 60;
+  const minutesRatio = (secondsRatio + d.getMinutes()) / 60;
+  const hoursRatio = (minutesRatio + d.getHours()) / 12;
+  setRotation(secondHand, secondsRatio);
+  setRotation(minuteHand, minutesRatio);
+  setRotation(hourHand, hoursRatio);
+  //date display (eg. Tue 6-9) MODE 0
+  if (mode == 0){
+	let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+	if (d.getMonth() == 10 || d.getMonth == 11) digitalDisplay.innerHTML = days[d.getDay()] + "&nbsp;" + (d.getMonth()+1) + "-"+ d.getDate();
+	else if (d.getDate() > 10) digitalDisplay.innerHTML = days[d.getDay()] + "&nbsp;" + (d.getMonth()+1) + "-"+ d.getDate();
+  else digitalDisplay.innerHTML = days[d.getDay()] + "&emsp;" + (d.getMonth()+1) + "-"+ d.getDate();
+  }
+  //time function (eg. 12:03:42) MODE 1
+  if (mode == 1) {
+  if (d.getMinutes() < 10)
+	if(d.getSeconds() < 10) digitalDisplay.innerHTML = d.getHours()+ ":0" +d.getMinutes() + " 0" + d.getSeconds();
+	else digitalDisplay.innerHTML = d.getHours()+ ":0" +d.getMinutes() + ":" + d.getSeconds();
+  else if (d.getSeconds() < 10) digitalDisplay.innerHTML = d.getHours()+ ":" +d.getMinutes() + ":0" + d.getSeconds();
+  else digitalDisplay.innerHTML = d.getHours()+ ":" +d.getMinutes() + ":" + d.getSeconds();
+  }
+  //playing chimes each quarter hr
+  if (d.getMinutes() == 15 && d.getSeconds() == 0){
+	quarter.play();
+  }
+  else if (d.getMinutes() == 30 && d.getSeconds() == 0){
+	halfhr.play();
+  }
+  else if (d.getMinutes() == 45 && d.getSeconds() == 0){
+	threequarter.play();
+  }
+  else if (d.getMinutes() == 0 && d.getSeconds() == 0){
+	fullhr.play();
+  }
+  ticktock.play();
+}
+function changemode(){
+	if (mode == 0){
+    mode = 1;
+    changeFont(digitalDisplay, "DSEG7");
+  }
+	else{
+    mode = 0;
+    changeFont(digitalDisplay, "DSEG14");
+  }
+}
+async function playHours(){
+	const d = new Date();
+  let hours = d.getHours()>12?d.getHours()-12:(d.getHours()==0?12:d.getHours());
+  if (hours == 1) await asyncaudio("longhrchime.ogg");
+  else{
+    for(let i = 0; i < hours-1; i++){
+      await asyncaudio("hourchime.ogg");
+    }
+    await asyncaudio("longhrchime.ogg");
+  }
+}
+function asyncaudio(url){
+  return new Promise((resolve,reject) => {
+    let audio = new Audio(url);
+    audio.onended = resolve;
+    audio.play();
+   });
+}
+
+function changeFont(element, font) {
+  element.style.setProperty('font-family', font);
+}
+function setRotation(element, rotationRatio) {
+  element.style.setProperty('--rotation', rotationRatio * 360)
+}
+
+setClock();
+</script>
+
+</body>
+</html>
