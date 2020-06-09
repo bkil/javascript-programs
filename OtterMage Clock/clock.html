@@ -148,13 +148,13 @@ function setClock() {
 	else if (d.getDate() > 10) digitalDisplay.innerHTML = days[d.getDay()] + "&nbsp;" + (d.getMonth()+1) + "-"+ d.getDate();
   else digitalDisplay.innerHTML = days[d.getDay()] + "&emsp;" + (d.getMonth()+1) + "-"+ d.getDate();
   }
+
+  function pad(value) {
+    return value < 10 ? "0" + value : value;
+  } 
   //time function (eg. 12:03:42) MODE 1
   if (mode == 1) {
-  if (d.getMinutes() < 10)
-	if(d.getSeconds() < 10) digitalDisplay.innerHTML = d.getHours()+ ":0" +d.getMinutes() + " 0" + d.getSeconds();
-	else digitalDisplay.innerHTML = d.getHours()+ ":0" +d.getMinutes() + ":" + d.getSeconds();
-  else if (d.getSeconds() < 10) digitalDisplay.innerHTML = d.getHours()+ ":" +d.getMinutes() + ":0" + d.getSeconds();
-  else digitalDisplay.innerHTML = d.getHours()+ ":" +d.getMinutes() + ":" + d.getSeconds();
+	 digitalDisplay.innerHTML = "&nbsp;&nbsp;" +  d.getHours()+ ":" +pad(d.getMinutes()) + ":" + pad(d.getSeconds());
   }
   //playing chimes each quarter hr
   if (d.getMinutes() == 15 && d.getSeconds() == 0){
