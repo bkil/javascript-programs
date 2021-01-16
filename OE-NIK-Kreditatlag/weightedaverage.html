@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ÓE-NIK Weighted academic average calculator</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <script src="bootstrap.min.js"></script>
+</head>
+
+<body onload="getNIKsubjects();">
+
+    <style>
+        th{ 
+            color:#fff;
+         }
+		header a{
+		color: #fff;
+		}
+		
+    </style>
+
+    <header class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-success text-white border-bottom shadow-sm">
+		<p class="h5 my-0 me-md-auto fw-normal">ÓE-NIK Weighted academic average calculator <a href="index.html">Magyar verzió</a></p>
+		<div class="input-group"><span>Change theme: <button onclick="changeTheme();" id="theme" class="btn btn-dark" type="button">Change to dark theme</button></span></div>
+		<span><a href="https://nikhok.hu/">Go back to Neumann HÖK's page</a></span>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+				<div class="input-group">
+					<select class="form-control" name="selector" id="selector"></select>
+					
+					<div class="input-group-append">
+						<button onclick="calculate(selectedCredits);calculateCreditIndex();addSubject();" class="btn btn-success" type="button">Add subject</button>
+						<button onclick="clearSubjects();" class="btn btn-danger" type="button">Delete all subjects
+					</div>
+					<p>
+					
+               </div>
+				<div class="input-group">
+					<span>Semester:<input type='text' placeholder="K-MOOC or a number" class="form-control" id="uniquesemester" value=""></span>
+					<span>Subject name:<input type='text' class="form-control" placeholder="eg. Jazz kultúrtörténete I." id="uniquesubject"></span>
+					<span>Specialization(eg. J or IOT):<input type='text' placeholder="leave it blank if none" class="form-control" id="uniquespec"></span>
+					<span>Credit:<input type='number' placeholder="Between 1 and 50" min='1' max="50" class="form-control" id="uniquecredit"></span>
+					<span><br><button onclick="calculate(selectedCredits);calculateCreditIndex();addCustomSubject();" class="btn btn-success" type="button">Add unique subject</button></span>
+				</div>
+			   <div class="input-group">
+					<span>&nbsp;Current semester:&nbsp;<input type='number' placeholder="Between 1 and 12" oninput="calculate(selectedCredits);calculateCreditIndex();" class="form-control" id="semester" value='1' min='1' max="12"></span>
+					<span>&nbsp;Earned credits in previous semesters:&nbsp;<input type='number' placeholder="Between 0 and 1000" oninput="calculate(selectedCredits);calculateCreditIndex();" class="form-control" id="prevCredits" min='0' max="1000"></span>
+				</div>
+				
+				<br>
+				<div class="alert" id="alert"></div>
+                <table class="table table-striped">
+                    <tr class="bg-success">
+						<th>Semester</th>
+						<th>Subject</th>
+						<th>Specialization</th>
+                        <th>Credit</th>
+                        <th>Grade (1-5)</th>
+						<th>Delete button</th>
+                    </tr>
+                    <tbody id="SubjectTable">
+
+                    </tbody>
+                </table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 col-sm-6 col-6 col-lg-4 col-xl-4">
+				<div id="calculate"></div>
+			</div>
+			<div class="col-md-4 col-sm-6 col-6 col-lg-4 col-xl-4">
+				<div id="calculateCreditIdx"></div>
+			</div>
+			<div class="col-md-4 col-sm-6 col-6 col-lg-4 col-xl-4 alert alert-info"><p>How to use: Type in the current semester, and the credits you already earned, and choose a subject(or type in a subject that's not in the list for eg. subjects from <a href="https://www.kmooc.uni-obuda.hu/">K-MOOC(hungarian)</a> ), then add to the table, and then type in the grade, the lion share is done by the app. The subjects are done the next way in the list: first the subjects in the main curriculum, then after the specialization subjects come.</p>
+			<p id="specialization">On ÓE-NIK the abbreviations of the specializations are the followings:
+				<ul>
+					<li>J: IOT, Embedded Systems and Robotics Specialization</li>
+					<li>B: Big Data and Business Intelligence Specialization</li>
+					<li>C: Cloud Service Technologies and IT Security Specialization</li>
+					<li>T: Software Design and Development Specialization</li>
+				</ul>
+			</p>
+			</div>
+			</div>
+		</div>
+	</div>
+	<script src="calculate.js"></script>
+</body>
+
+</html>
