@@ -20,6 +20,6 @@ If you want it to work, you need a webserver like apache or nginx, because it wi
 
 My goal is to reach it to the students and calculate the average more easily. (You can add your own subject, not just what it's in the curriculum, don't worry :))
 
-## IMAGES / KÉPEK
-!(Jelenlegi verzió / Current version)[https://files.catbox.moe/esuhf4.png]
-!(Régebbi verzió tantárgyakkal / Older version with subjects)[https://files.catbox.moe/arh8zw.png]
+## KÉPEK / IMAGES
+![Jelenlegi verzió / Current version](https://files.catbox.moe/esuhf4.png)
+![Régebbi verzió tantárgyakkal / Older version with subjects](https://files.catbox.moe/arh8zw.png)
