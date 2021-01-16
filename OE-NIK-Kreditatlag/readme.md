@@ -16,7 +16,7 @@ I got some help from a discord friend so to avoid problems that may occur, but I
 
 The user manual is in the web app so in the html file.
 
-If you want it to work, you need a webserver like apache or nginx, because it will read a .json file the website, where the curriculum is. I made two versions: NIK Computer Science Engineering Hungarian and the same in English (because of international students).
+If you want it to work, you need a webserver like apache or nginx, because the website will read a .json file , where the curriculum is. I made two versions: NIK Computer Science Engineering Hungarian and the same in English (because of international students).
 
 My goal is to reach it to the students and calculate the average more easily. (You can add your own subject, not just what it's in the curriculum, don't worry :))
 
