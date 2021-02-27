@@ -27,26 +27,23 @@
 
     <header class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-success text-white border-bottom shadow-sm">
 		<p class="h5 my-0 me-md-auto fw-normal">ÓE-NIK Súlyozott tanulmányi átlagszámító <a href="weightedaverage.html">English version</a></p>
-		<div class="input-group"><span>Témaváltás: <button onclick="changeTheme();" id="theme" class="btn btn-dark" type="button">Sötét témára váltás</button></span></div>
-		<span><a href="https://nikhok.hu/">Vissza a Neumann HÖK oldalára</a></span>
+		<div class="input-group"><span>Témaváltás: <button onclick="changeTheme();" id="theme" class="btn btn-dark" type="button">Sötét témára váltás</button></span>
+		
     </header>
     <div class="container">
         <div class="row">
             <div class="col-12">
 				<div class="input-group">
-					<select class="form-control" name="selector" id="selector"></select>
-					
+					<span>Keresés tárgy névre:<input type='text' placeholder="pl. Diszkrét Matematika" class="form-control" oninput="searchBySubject()" id="searchBySubject"></span>
+					<span>vagy Neptun kódra<input type='text' placeholder="pl. NMXDM1HBNE" class="form-control" id="searchByNeptun" oninput="searchByNeptun()"></span>
 					<div class="input-group-append">
-						<button onclick="calculate(selectedCredits);calculateCreditIndex();addSubject();" class="btn btn-success" type="button">Tárgy hozzáadása</button>
-						<button onclick="clearSubjects();" class="btn btn-danger" type="button">Összes tárgy törlése
+						<br><button onclick="clearSubjects();" class="btn btn-danger" type="button">Összes tárgy törlése
 					</div>
 					<p>
 					
                </div>
 				<div class="input-group">
-					<span>Félév:<input type='text' placeholder="K-MOOC vagy egy szám" class="form-control" id="uniquesemester" value=""></span>
 					<span>Tantárgy neve:<input type='text' placeholder="pl. Jazz kultúrtörténete I." class="form-control" id="uniquesubject"></span>
-					<span>Specializáció(pl. I vagy IOT):<input type='text' placeholder="hagyd üresen ha nincs" class="form-control" id="uniquespec"></span>
 					<span>Kredit:<input type='number' placeholder="1 és 50 között" min='1' max="50" class="form-control" id="uniquecredit"></span>
 					<span><br><button onclick="calculate(selectedCredits);calculateCreditIndex();addCustomSubject();" class="btn btn-success" type="button">Egyedi tantárgy hozzáadása</button></span>
 				</div>
@@ -55,14 +52,19 @@
 				<span>&nbsp;Előző félévekben teljesített összes kredit:&nbsp;<input type='number' placeholder="0 és 1000 között" oninput="calculate(selectedCredits);calculateCreditIndex();" class="form-control" id="prevCredits" min='0' max="1000"></span>
 			</div>
 				
-				
+				<table class="table table-striped" id="searchresult">
+				<tr class="bg-danger">
+					<th>Tantárgy</th>
+					<th>Neptun kód</th>
+					<th>Kredit</th>
+					<th>Hozzáadás</th>
+				</tr>
+				</table>
 				<br>
 				<div class="alert" id="alert"></div>
                 <table class="table table-striped">
                     <tr class="bg-success">
-						<th>Félév</th>
 						<th>Tantárgy</th>
-						<th>Szakirány</th>
                         <th>Kredit</th>
                         <th>Jegy (1-5)</th>
 						<th>Törlés gomb</th>
@@ -80,15 +82,7 @@
 			<div class="col-md-4 col-sm-6 col-6 col-lg-4 col-xl-4">
 				<div id="calculateCreditIdx"></div>
 			</div>
-			<div class="col-md-4 col-sm-6 col-6 col-lg-4 col-xl-4 alert alert-info"><p>Használat: Írd be az aktuális félévet, majd a meglévő előző kreditjeid számát, válassz ki egy tantárgyat(vagy írd be azt, ami nem szerepel, pl. a <a href="https://www.kmooc.uni-obuda.hu/">K-MOOC</a>-os tárgyak), add hozzá a táblába, majd írd be a jegyet, a többit az app elintézi helyetted. A tantárgy lista úgy van megcsinálva, hogy először a mintatanterves tárgyak, majd utána a szakirányosak jönnek.</p>
-			<p id="specialization">Az ÓE-NIK-en a szakirányok rövidítései a következők:
-				<ul>
-					<li>I: IOT, beágyazott rendszerek és robotika specializáció</li>
-					<li>G: Big Data és üzleti intelligencia specializáció</li>
-					<li>F: Felhő szolgáltatási technológiák és IT biztonság specializáció</li>
-					<li>S: Szoftvertervezés és -fejlesztés specializáció</li>
-				</ul>
-			</p>
+			<div class="col-md-4 col-sm-6 col-6 col-lg-4 col-xl-4 alert alert-info"><p>Használat: Írd be az aktuális félévet, majd a meglévő előző kreditjeid számát, keress rá egy tantárgyra Neptun kód alapján(vagy írd be azt, ami nem szerepel, pl. a <a href="https://www.kmooc.uni-obuda.hu/">K-MOOC</a>-os tárgyak), add hozzá a táblába, majd írd be a jegyet, a többit az app elintézi helyetted.</p>
 			</div>
 		</div>
 	</div>

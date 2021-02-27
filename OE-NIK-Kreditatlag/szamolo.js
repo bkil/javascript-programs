@@ -3,7 +3,8 @@ subjects = {};
 credits = {};
 var jsonObj = {};
 let nextSubjectIdx = 0;
-let noticedisplayed = 0;
+let searchresult = document.getElementById("searchresult");
+searchresult.style.display="none";
 function getNIKsubjects(){
 	// AJAX Request
 	let xhttp = new XMLHttpRequest();
@@ -12,13 +13,19 @@ function getNIKsubjects(){
 			jsonObj = JSON.parse(xhttp.responseText);
 			var jsonObjl = jsonObj.length;
 			for (const currentObj of jsonObj) {
-				html += "<option value=" + currentObj.value + ">" +currentObj.name + "</option>";
+				var row = searchresult.insertRow();
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				var cell4 = row.insertCell(3);
+				cell1.innerHTML = currentObj.name;
+				cell2.innerHTML = currentObj.neptun;
+				cell3.innerHTML = currentObj.credit;
+				cell4.innerHTML = "<button class='btn btn-success' onclick='calculate(selectedCredits);calculateCreditIndex();addSubject(this);'>Hozzáadás</button>";
 			}
-			document.getElementById("selector").innerHTML = html;
-			noticedisplayed = 0; // this is for future purposes if the code needs to be expanded to handle multiple curriculums of ÓE-NIK.
 		}
 	}
-	xhttp.open('GET', '/Kreditatlag/NIKsubjectsHUN.json', true);
+	xhttp.open('GET', '/Kreditatlag/OEsubjects.json', true);
 	xhttp.send();
 }
 selectedSubject = [];
@@ -26,31 +33,73 @@ selectedCredits = [];
 
 SubjectTable = document.getElementById("SubjectTable");
 
-function addSubject() {
+function searchBySubject(){
+  let input, filter, tr, td, table, txtValue;
+  input = document.getElementById("searchBySubject");
+  filter = input.value.toUpperCase();
+  if (input.value.length > 0) searchresult.style.display = '';
+  else searchresult.style.display = 'none';
+  tr = searchresult.getElementsByTagName("tr");
+  for (let i = 0; i < tr.length; i++) {
+     td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+       txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+}
+
+function searchByNeptun(){
+	var input, filter, tr, td, txtValue;
+	input = document.getElementById("searchBySubject");
+	filter = input.value.toUpperCase();
+	if (input.value.length > 0) searchresult.style.display = '';
+	else searchresult.style.display = 'none';
+	tr = searchresult.getElementsByTagName("tr");
+	for (let i = 0; i < tr.length; i++) {
+	   td = tr[i].getElementsByTagName("td")[0];
+	  if (td) {
+		 txtValue = td.textContent || td.innerText;
+		if (txtValue.toUpperCase().indexOf(filter) > -1) {
+		  tr[i].style.display = "";
+		} else {
+		  tr[i].style.display = "none";
+		}
+	  }       
+	}
+}
+function addSubject(r) {
+	var i = r.parentNode.parentNode.rowIndex;
+	var row = searchresult.rows[i];
 	var selectedSubjectSorted = selectedSubject.slice();
 	selectedSubjectSorted.sort();
-	var selector = document.getElementById("selector");
-	var selectedObject = jsonObj.find(currentObj => currentObj.value == selector.value);
-	if(selectedSubject.includes(selector.value) == false) {
+	var searchBySubject = document.getElementById("searchBySubject");
+	var searchByNeptun = document.getElementById("searchByNeptun");
+	var selectedObject = jsonObj.find(currentObj => currentObj.neptun == row.cells[1].innerHTML);
+	if(selectedSubject.includes(row.cells[1].innerHTML) == false) {
 		document.getElementById("alert").classList.add("alert-success");
 		document.getElementById("alert").classList.remove("alert-danger");
 		document.getElementById("alert").innerHTML = "A tantárgy felvéve a táblába!";
 		var row = SubjectTable.insertRow();
+		row.id = selectedObject.neptun;
 		var cell1 = row.insertCell(0);
 		var cell2 = row.insertCell(1);
 		var cell3 = row.insertCell(2);
 		var cell4 = row.insertCell(3);
-		var cell5 = row.insertCell(4);
-		var cell6 = row.insertCell(5);
-		cell1.innerHTML = selectedObject.semester;
-		cell2.innerHTML = selectedObject.name;
-		cell3.innerHTML = selectedObject.specialization;
-		cell4.innerHTML = selectedObject.credit;
+		cell1.innerHTML = selectedObject.name;
+		cell2.innerHTML = selectedObject.credit;
 		selectedCredits.push(selectedObject.credit);
-		selectedSubject.push(selector.value);
-		if(isDark == 1) cell5.innerHTML = "<div class='input-group mb-3'><input type='number' class='form-control bg-dark text-white' min='1' max='5' name='numbers' oninput='calculate(selectedCredits);calculateCreditIndex();' id='" + "subj" + selector.value + "'></div>";
-		else cell5.innerHTML = "<div class='input-group mb-3'><input type='number' class='form-control' min='1' max='5' name='numbers' oninput='calculate(selectedCredits);calculateCreditIndex();' id='" + "subj" + selector.value + "'></div>";
-		cell6.innerHTML = "<button class='btn btn-danger' onclick='deleteRow(this);calculate(selectedCredits);calculateCreditIndex();'>Törlés</button>";
+		selectedSubject.push(selectedObject.neptun);
+		cell3.innerHTML = "<div class='input-group mb-3'><input type='number' class='form-control' min='1' max='5' name='numbers' oninput='calculate(selectedCredits);calculateCreditIndex();' id='" + "subj" + nextSubjectIdx + "'></div>";
+		cell4.innerHTML = "<button class='btn btn-danger' onclick='deleteRow(this);calculate(selectedCredits);calculateCreditIndex();'>Törlés</button>";
+		searchByNeptun.value = null;
+		searchBySubject.value= null;
+		searchresult.style.display = "none";
+		// We don't need the other algorithm, because this already "clears" the search result.
 	  }
 	else{
 		document.getElementById("alert").classList.remove("alert-success");
@@ -60,11 +109,9 @@ function addSubject() {
 }	
 function addCustomSubject(){
 	nextSubjectIdx += 1;
-	let uniquespec = document.getElementById("uniquespec");
-	let uniquesemester = document.getElementById("uniquesemester");
 	let uniquesubject = document.getElementById("uniquesubject");
 	let uniquecredit = document.getElementById("uniquecredit");
-	if(selectedSubject.includes(uniquesubject.value) == false && uniquecredit.value > 0 && uniquecredit.value < 51 && uniquesemester.value != "" && uniquesubject.value != ""){
+	if(selectedSubject.includes(uniquesubject.value) == false && uniquecredit.value > 0 && uniquecredit.value < 51 &&	 uniquesubject.value != ""){
 		document.getElementById("alert").classList.add("alert-success");
 		document.getElementById("alert").classList.remove("alert-danger");
 		document.getElementById("alert").innerHTML = "A tantárgy felvéve a táblába!";
@@ -73,30 +120,19 @@ function addCustomSubject(){
 		var cell2 = row.insertCell(1);
 		var cell3 = row.insertCell(2);
 		var cell4 = row.insertCell(3);
-		var cell5 = row.insertCell(4);
-		var cell6 = row.insertCell(5);
-		cell1.innerHTML = uniquesemester.value;
-		cell2.innerHTML = uniquesubject.value;
-		if(uniquespec.value == "") cell3.innerHTML = "nincs";
-		else cell3.innerHTML = uniquespec.value;
-		cell4.innerHTML = uniquecredit.value;
+		cell1.innerHTML = uniquesubject.value;
+		cell2.innerHTML = uniquecredit.value;
 		selectedCredits.push(Number(uniquecredit.value));
 		selectedSubject.push(uniquesubject.value);
-		if(isDark == 1) cell5.innerHTML = "<div class='input-group mb-3'><input type='number' class='form-control bg-dark text-white' min='1' max='5' name='numbers' oninput='calculate(selectedCredits);calculateCreditIndex();' id='" + "subj" + nextSubjectIdx + "'></div>";
-		else cell5.innerHTML = "<div class='input-group mb-3'><input type='number' class='form-control' min='1' max='5' name='numbers' oninput='calculate(selectedCredits);calculateCreditIndex();' id='" + "subj" + nextSubjectIdx + "'></div>";
-		cell6.innerHTML = "<button class='btn btn-danger' onclick='deleteRow(this);calculate(selectedCredits);calculateCreditIndex();'>Törlés</button>";
+		if(isDark == 1) cell3.innerHTML = "<div class='input-group mb-3'><input type='number' class='form-control bg-dark text-white' min='1' max='5' name='numbers' oninput='calculate(selectedCredits);calculateCreditIndex();' id='" + "subj" + nextSubjectIdx + "'></div>";
+		else cell3.innerHTML = "<div class='input-group mb-3'><input type='number' class='form-control' min='1' max='5' name='numbers' oninput='calculate(selectedCredits);calculateCreditIndex();' id='" + "subj" + nextSubjectIdx + "'></div>";
+		cell4.innerHTML = "<button class='btn btn-danger' onclick='deleteRow(this);calculate(selectedCredits);calculateCreditIndex();'>Törlés</button>";
 	}
 	else{
 		document.getElementById("alert").classList.remove("alert-success");
 		document.getElementById("alert").classList.add("alert-danger");
 		if (selectedSubject.includes(uniquesubject.value)){
 			document.getElementById("alert").innerHTML = "A tantárgy már szerepel a táblában!";
-		}
-		else if(uniquesemester.value == "" && uniquesubject.value == ""){
-			document.getElementById("alert").innerHTML = "Kérlek írj valamit a félévhez és a tantárgyhoz!";
-		}
-		else if(uniquesemester.value == ""){
-			document.getElementById("alert").innerHTML = "Kérlek írj valamit félévnek!";
 		}
 		else if(uniquesubject.value == ""){
 			document.getElementById("alert").innerHTML = "Kérlek írj valamit tantárgynak!";
@@ -106,9 +142,10 @@ function addCustomSubject(){
 		}
 	}
 }
-function deleteRow(r) {
-	var i = r.parentNode.parentNode.rowIndex - 1; 
-	document.getElementById("SubjectTable").deleteRow(i);
+function deleteRow(item) {
+	var row = item.closest('tr');
+	var i = item.parentNode.parentNode.rowIndex - 1; 
+    row.parentNode.removeChild(row);
 	selectedCredits.splice(i,1);
 	selectedSubject.splice(i,1);
 }
@@ -190,13 +227,10 @@ var isDark = 0;
 function changeTheme(){
 	var body= document.body;
 	var theme = document.getElementById("theme");
-	var selector = document.getElementById("selector");
 	if(isDark == 0) {theme.innerHTML = "Világos témára váltás"; isDark = 1;}
 	else {theme.innerHTML = "Sötét témára váltás"; isDark = 0;}
 	body.classList.toggle("bg-dark");
-	body.classList.toggle("text-white");
-	selector.classList.toggle("bg-dark");
-	selector.classList.toggle("text-white");
+	body.classList.toggle("text-white");	
 	SubjectTable.classList.toggle("table-striped");
 	SubjectTable.classList.toggle("table-dark");
 
