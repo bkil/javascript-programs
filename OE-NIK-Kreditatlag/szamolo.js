@@ -34,43 +34,44 @@ selectedCredits = [];
 SubjectTable = document.getElementById("SubjectTable");
 
 function searchBySubject(){
-  let input, filter, tr, td, table, txtValue;
-  input = document.getElementById("searchBySubject");
-  filter = input.value.toUpperCase();
-  if (input.value.length > 0) searchresult.style.display = '';
-  else searchresult.style.display = 'none';
-  tr = searchresult.getElementsByTagName("tr");
+  let input = document.getElementById("searchBySubject");
+  let tr = searchresult.getElementsByTagName("tr");
+  let upperCaseText = input.value.toUpperCase();
+  let td, text;
+  if (input.value.length > 0) searchresult.style.display = ''; // the results will be displayed
+  else searchresult.style.display = 'none'; //nothing will get displayed.
   for (let i = 0; i < tr.length; i++) {
-     td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-       txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }       
-  }
+	  let td = tr[i].getElementsByTagName("td")[0];
+	  if (td) {
+		  text = td.textContent || td.innerText;
+		  if (text.toUpperCase().indexOf(upperCaseText) > -1) {
+			tr[i].style.display = "";
+			} 
+		  else {
+       			 tr[i].style.display = "none";
+    		  }
+	    }       
+       }
 }
 
 function searchByNeptun(){
-	var input, filter, tr, td, txtValue;
-	input = document.getElementById("searchByNeptun");
-	filter = input.value.toUpperCase();
+	let input = document.getElementById("searchByNeptun");
+	let tr = searchresult.getElementsByTagName("tr");
+	let upperCaseText = input.value.toUpperCase();
+	let td, text;
 	if (input.value.length > 0) searchresult.style.display = '';
 	else searchresult.style.display = 'none';
-	tr = searchresult.getElementsByTagName("tr");
 	for (let i = 0; i < tr.length; i++) {
 	   td = tr[i].getElementsByTagName("td")[1];
 	  if (td) {
-		 txtValue = td.textContent || td.innerText;
-		if (txtValue.toUpperCase().indexOf(filter) > -1) {
+		 text = td.textContent || td.innerText;
+		if (text.toUpperCase().indexOf(upperCaseText) > -1) {
 		  tr[i].style.display = "";
 		} else {
 		  tr[i].style.display = "none";
 		}
 	  }       
-	}
+     }
 }
 function addSubject(r) {
 	var i = r.parentNode.parentNode.rowIndex;
