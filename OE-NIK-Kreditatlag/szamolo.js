@@ -25,7 +25,10 @@ function getNIKsubjects(){
 			}
 		}
 	}
-	xhttp.open('GET', '/Kreditatlag/OEsubjects.json', true);
+<!-- in production:
+ xhttp.open('GET', '/Kreditatlag/OEsubjects.json', true);
+-->
+	xhttp.open('GET', 'OEsubjects.json', true);
 	xhttp.send();
 }
 selectedSubject = [];
